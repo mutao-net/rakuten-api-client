@@ -6,12 +6,15 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
+	"reflect"
 	"strings"
 )
 
 type QueryParameters struct {
-	title string
+	ApplicationID string `label:"applicationId"`
+	Title         string `label:"title"`
+	GenreID       string `label:"genreId"`
+	Sort          string `label:"sort"`
 }
 
 type ResponesResults struct {
@@ -32,29 +35,29 @@ const (
 	api = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
 )
 
-/**
-func main() {
-	params := setParams()
+func GetRakutenItems(query QueryParameters) {
+	params := setParams(query)
 	result := getItems(api + params)
-	fmt.Printf("result: %+v\n", result)
-
-}
-*/
-func GetRakuten() {
-	params := setParams()
-	result := getItems(api + params)
+	fmt.Println(api + params)
 	fmt.Printf("result: %+v\n", result)
 }
-func setParams() string {
+func setParams(params QueryParameters) string {
 	queries := []string{}
-	params := map[string]string{
-		"applicationId": os.Getenv("APPLICATION_ID"),
-		"genreId":       "100317",
-		"sort":          "+reviewAverage",
-		"page":          "1",
-		"hits":          "2"}
-	for k, v := range params {
-		query := k + "=" + url.QueryEscape(v)
+
+	rv := reflect.ValueOf(params)
+	rt := rv.Type()
+	for i := 0; i < rt.NumField(); i++ {
+		field := rt.Field(i)
+		key := field.Tag.Get("label")
+		value, err := rv.FieldByName(field.Name).Interface().(string)
+		if !err {
+			panic(err)
+		}
+		if value == "" {
+			continue
+		}
+
+		query := key + "=" + url.QueryEscape(value)
 		queries = append(queries, query)
 	}
 	return "?" + strings.Join(queries, "&")

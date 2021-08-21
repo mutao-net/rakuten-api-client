@@ -5,5 +5,11 @@ import (
 )
 
 func main() {
-	rakuten.GetRakuten()
+	params := rakuten.QueryParameters{
+		ApplicationID: "XXXXX",
+		Title:         "wine",
+		GenreID:       "100317",
+		Sort:          "+reviewAverage",
+	}
+	rakuten.GetRakutenItems(params)
 }
