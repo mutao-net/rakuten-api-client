@@ -7,8 +7,8 @@ import (
 func main() {
 	params := rakuten.QueryParameters{
 		ApplicationID: "XXXXX",
-		Title:         "wine",
-		GenreID:       "100317",
+		Keyword:       "golang",
+		GenreID:       "0",
 		Sort:          "+reviewAverage",
 	}
 	rakuten.GetRakutenItems(params)

@@ -12,7 +12,7 @@ import (
 
 type QueryParameters struct {
 	ApplicationID string `label:"applicationId"`
-	Title         string `label:"title"`
+	Keyword       string `label:"keyword"`
 	GenreID       string `label:"genreId"`
 	Sort          string `label:"sort"`
 }
