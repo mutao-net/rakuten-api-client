@@ -2,7 +2,6 @@ package rakuten
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -35,11 +34,9 @@ const (
 	api = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
 )
 
-func GetRakutenItems(query QueryParameters) {
+func GetRakutenItems(query QueryParameters) ResponesResults {
 	params := setParams(query)
-	result := getItems(api + params)
-	fmt.Println(api + params)
-	fmt.Printf("result: %+v\n", result)
+	return getItems(api + params)
 }
 func setParams(params QueryParameters) string {
 	queries := []string{}
